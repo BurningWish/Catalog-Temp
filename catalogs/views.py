@@ -13,7 +13,7 @@ from flask import make_response
 import requests
 import os
 
-CLIENT_ID = json.loads(open('/vagrant/catalogs/catalogs/g_client_secrets.json', 'r').read())['web']['client_id']  # NOQA
+CLIENT_ID = json.loads(open('/var/www/catalogs/catalogs/g_client_secrets.json', 'r').read())['web']['client_id']  # NOQA
 APPLICATION_NAME = "Catalog App"
 
 # Connect to Database and create database session
@@ -47,10 +47,10 @@ def fbconnect():
     access_token = request.data
     print "access token received %s " % access_token
 
-    app_id = json.loads(open('/vagrant/catalogs/catalogs/fb_client_secrets.json', 'r').read())[
+    app_id = json.loads(open('/var/www/catalogs/catalogs/fb_client_secrets.json', 'r').read())[
         'web']['app_id']
     app_secret = json.loads(
-        open('/vagrant/catalogs/catalogs/fb_client_secrets.json', 'r').read())['web']['app_secret']
+        open('/var/www/catalogs/catalogs/fb_client_secrets.json', 'r').read())['web']['app_secret']
     url = 'https://graph.facebook.com/v2.8/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
         app_id, app_secret, access_token)
     h = httplib2.Http()
@@ -125,7 +125,7 @@ def gconnect():
 
     try:
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('/vagrant/catalogs/catalogs/g_client_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets('/var/www/catalogs/catalogs/g_client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
